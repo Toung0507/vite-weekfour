@@ -12,12 +12,14 @@ const defaultModalState = {
     title: "",
     category: "",
     unit: "",
+    time: "",
     origin_price: "",
     price: "",
     description: "",
     content: "",
     is_enabled: 0,
     imagesUrl: [""]
+
 };
 
 function ProductsPage() {
@@ -28,7 +30,7 @@ function ProductsPage() {
     const [isProductModalOpen, setIsProductModalOpen] = useState(false);
     const [isDelProductModalOpen, setIsDelProductModalOpen] = useState(false);
 
-    // 抓取產品資料
+    // 抓取密室資料
     const getProducts = async (page) => {
         try {
             const res = await axios.get(`${baseApi}/v2/api/${apiPath}/admin/products?page=${page}`);
@@ -43,6 +45,7 @@ function ProductsPage() {
     // 更換頁面 按鈕
     const handleChangePage = (page) => {
         getProducts(page);
+        // e.preventDefault(); //a連結跟form都需要取消預設行為，會比較好 > 放這邊會影響到他不能夠換頁
     };
 
     // 顯示Modal - 編輯跟新增
@@ -73,16 +76,17 @@ function ProductsPage() {
                 <div className="row mt-3">
                     <div className="col">
                         <div className="d-flex justify-content-between">
-                            <h2>產品列表</h2>
+                            <h2>密室列表</h2>
                             <button className="btn btn-primary" onClick={() => handleShowProductModal('create')}>
-                                新增產品
+                                新增密室
                             </button>
                         </div>
                         <table className="table text-center table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>產品名稱</th>
-                                    <th>原價</th>
+                                    <th>密室名稱</th>
+                                    <th>遊玩時間</th>
+                                    <th>定價</th>
                                     <th>售價</th>
                                     <th>是否啟用</th>
                                     <th>管理</th>
@@ -92,6 +96,7 @@ function ProductsPage() {
                                 {products.map((item) => (
                                     <tr key={item.id}>
                                         <td>{item.title}</td>
+                                        <td>{item.time ? item.time + '分' : null}</td>
                                         <td>{item.origin_price}</td>
                                         <td>{item.price}</td>
                                         <td>{item.is_enabled ? (<span className="text-success">啟用</span>) : (<span className="text-danger">未啟用</span>)}</td>

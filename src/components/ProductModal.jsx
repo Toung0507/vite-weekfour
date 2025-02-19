@@ -11,7 +11,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
 
     const [modalData, setModalData] = useState(tempProduct);
 
-    // 新增產品
+    // 新增密室
     const addProduct = async () => {
         try {
             const res = await axios.post(`${baseApi}/v2/api/${apiPath}/admin/product`, {
@@ -33,12 +33,13 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
         }
     };
 
-    // 更新產品
+    // 更新密室
     const updateProduct = async () => {
         try {
             const res = await axios.put(`${baseApi}/v2/api/${apiPath}/admin/product/${modalData.id}`, {
                 data: {
                     ...modalData,
+                    time: Number(modalData.time),
                     origin_price: Number(modalData.origin_price),
                     price: Number(modalData.price),
                     is_enabled: modalData.is_enabled ? 1 : 0
@@ -97,7 +98,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
         }
     }
 
-    // 處理產品Modal的input
+    // 處理密室Modal的input
     const handleModalInputChange = (e) => {
         const { value, name, checked, type } = e.target;
 
@@ -164,7 +165,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
             <div className="modal-dialog modal-dialog-centered modal-xl">
                 <div className="modal-content border-0 shadow">
                     <div className="modal-header border-bottom">
-                        <h5 className="modal-title fs-4">{modalMode === 'edit' ? "編輯產品" : "新增產品"}</h5>
+                        <h5 className="modal-title fs-4">{modalMode === 'edit' ? "編輯密室" : "新增密室"}</h5>
                         <button onClick={() => handleHideProductModal()} type="button" className="btn-close" aria-label="Close"></button>
                     </div>
 
@@ -183,7 +184,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="primary-image" className="form-label">
-                                        主圖
+                                        主視圖
                                     </label>
                                     <div className="input-group">
                                         <input
@@ -211,7 +212,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                                                 htmlFor={`imagesUrl-${index + 1}`}
                                                 className="form-label"
                                             >
-                                                副圖 {index + 1}
+                                                宣傳圖 {index + 1}
                                             </label>
                                             <input
                                                 value={image}
@@ -247,7 +248,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                             <div className="col-md-8">
                                 <div className="mb-3">
                                     <label htmlFor="title" className="form-label">
-                                        標題
+                                        密室名稱
                                     </label>
                                     <input
                                         value={modalData.title}
@@ -256,7 +257,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                                         id="title"
                                         type="text"
                                         className="form-control"
-                                        placeholder="請輸入標題"
+                                        placeholder="請輸入密室名稱"
                                     />
                                 </div>
 
@@ -275,25 +276,42 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                                     />
                                 </div>
 
-                                <div className="mb-3">
-                                    <label htmlFor="unit" className="form-label">
-                                        單位
-                                    </label>
-                                    <input
-                                        value={modalData.unit}
-                                        onChange={handleModalInputChange}
-                                        name="unit"
-                                        id="unit"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="請輸入單位"
-                                    />
+                                <div className="row g-3 mb-3">
+                                    <div className="col-6">
+                                        <label htmlFor="unit" className="form-label">
+                                            單位
+                                        </label>
+                                        <input
+                                            value={modalData.unit}
+                                            onChange={handleModalInputChange}
+                                            name="unit"
+                                            id="unit"
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="請輸入單位"
+                                        />
+                                    </div>
+                                    <div className="col-6">
+                                        <label htmlFor="time" className="form-label">
+                                            遊玩時間(總分鐘數)
+                                        </label>
+                                        <input
+                                            value={modalData.time}
+                                            onChange={handleModalInputChange}
+                                            name="time"
+                                            id="time"
+                                            type="number"
+                                            className="form-control"
+                                            placeholder="請輸入遊玩時間(總分鐘數)"
+                                            min={0}
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="row g-3 mb-3">
                                     <div className="col-6">
                                         <label htmlFor="origin_price" className="form-label">
-                                            原價
+                                            定價
                                         </label>
                                         <input
                                             value={modalData.origin_price}
@@ -302,7 +320,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                                             id="origin_price"
                                             type="number"
                                             className="form-control"
-                                            placeholder="請輸入原價"
+                                            placeholder="請輸入定價"
                                             min={0}
                                         />
                                     </div>
@@ -325,7 +343,7 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
 
                                 <div className="mb-3">
                                     <label htmlFor="description" className="form-label">
-                                        產品描述
+                                        密室描述
                                     </label>
                                     <textarea
                                         value={modalData.description}
@@ -334,23 +352,23 @@ function ProductModal({ isOpen, setIsOpen, modalMode, tempProduct, getProducts }
                                         id="description"
                                         className="form-control"
                                         rows={4}
-                                        placeholder="請輸入產品描述"
+                                        placeholder="請輸入密室描述"
                                     ></textarea>
                                 </div>
 
                                 <div className="mb-3">
                                     <label htmlFor="content" className="form-label">
-                                        說明內容
+                                        密室官方網址
                                     </label>
-                                    <textarea
+                                    <input
                                         value={modalData.content}
                                         onChange={handleModalInputChange}
                                         name="content"
                                         id="content"
                                         className="form-control"
                                         rows={4}
-                                        placeholder="請輸入說明內容"
-                                    ></textarea>
+                                        placeholder="請輸入密室官方網址"
+                                    ></input>
                                 </div>
 
                                 <div className="form-check">

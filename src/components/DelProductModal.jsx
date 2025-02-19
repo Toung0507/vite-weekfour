@@ -8,7 +8,7 @@ const apiPath = import.meta.env.VITE_API_PATH;
 function DelProductModal({ isOpen, setIsOpen, tempProduct, getProducts }) {
     const delproductModalRef = useRef(null);
 
-    // 刪除產品
+    // 刪除密室
     const deleteProduct = async () => {
         try {
             await axios.delete(`${baseApi}/v2/api/${apiPath}/admin/product/${tempProduct.id}`);
@@ -57,7 +57,7 @@ function DelProductModal({ isOpen, setIsOpen, tempProduct, getProducts }) {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h1 className="modal-title fs-5">刪除產品</h1>
+                        <h1 className="modal-title fs-5">刪除密室</h1>
                         <button
                             onClick={handleHideDelProductModal}
                             type="button"
